@@ -1,5 +1,5 @@
 import React, { cloneElement } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter } from 'react-router';
 import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
@@ -27,7 +27,7 @@ const propTypes = {
   navbar: PropTypes.node,
   actionsbar: PropTypes.node,
   media: PropTypes.node,
-  location: PropTypes.object.isRequired,
+  location: PropTypes.shape({}).isRequired,
 };
 
 const defaultProps = {
@@ -39,7 +39,7 @@ const defaultProps = {
 const intlMessages = defineMessages({
   kickedMessage: {
     id: 'app.error.kicked',
-    description: 'Message when the user is kicked out of the meeting',
+    description: 'Message when the user is removed from the conference',
   },
   waitingApprovalMessage: {
     id: 'app.guest.waiting',
@@ -72,8 +72,8 @@ const AppContainer = (props) => {
   );
 };
 
-export default withRouter(injectIntl(withModalMounter(createContainer((
-  { router, intl, baseControls }) => {
+
+export default withRouter(injectIntl(withModalMounter(withTracker(({ router, intl, baseControls }) => {
   const currentUser = Users.findOne({ userId: Auth.userID });
   const isMeetingBreakout = meetingIsBreakout();
 
@@ -84,17 +84,17 @@ export default withRouter(injectIntl(withModalMounter(createContainer((
   // Displayed error messages according to the mode (kicked, end meeting)
   const sendToError = (code, message) => {
     Auth.clearCredentials()
-        .then(() => {
-          router.push(`/error/${code}`);
-          baseControls.updateErrorState(message);
-        });
+      .then(() => {
+        router.push(`/error/${code}`);
+        baseControls.updateErrorState(message);
+      });
   };
 
   // Check if user is kicked out of the session
   Users.find({ userId: Auth.userID }).observeChanges({
     changed(id, fields) {
       if (fields.ejected) {
-        sendToError(403, intl.formatMessage(intlMessages.kickedMessage));
+        router.push(`/ended/${403}`);
       }
     },
   });
@@ -103,7 +103,7 @@ export default withRouter(injectIntl(withModalMounter(createContainer((
   Meetings.find({ meetingId: Auth.meetingID }).observeChanges({
     removed() {
       if (isMeetingBreakout) return;
-      sendToError(410, intl.formatMessage(intlMessages.endMeetingMessage));
+      router.push(`/ended/${410}`);
     },
   });
 
@@ -118,7 +118,7 @@ export default withRouter(injectIntl(withModalMounter(createContainer((
     closedCaption: getCaptionsStatus() ? <ClosedCaptionsContainer /> : null,
     fontSize: getFontSize(),
   };
-}, AppContainer))));
+})(AppContainer))));
 
 AppContainer.defaultProps = defaultProps;
 AppContainer.propTypes = propTypes;

@@ -162,6 +162,9 @@ class MeetingActor(
     MeetingStatus2x.unmuteMeeting(liveMeeting.status)
   }
 
+    // Set webcamsOnlyForModerator property in case we didn't after meeting creation
+    MeetingStatus2x.setWebcamsOnlyForModerator(liveMeeting.status, liveMeeting.props.usersProp.webcamsOnlyForModerator)
+
   /*******************************************************************/
   // Helper to create fake users for testing (ralam jan 5, 2018)
   //object FakeTestData extends FakeTestData
@@ -220,6 +223,7 @@ class MeetingActor(
       case m: UserBroadcastCamStartMsg => handleUserBroadcastCamStartMsg(m)
       case m: UserBroadcastCamStopMsg => handleUserBroadcastCamStopMsg(m)
       case m: UserJoinedVoiceConfEvtMsg => handleUserJoinedVoiceConfEvtMsg(m)
+<<<<<<< HEAD
       case m: MeetingActivityResponseCmdMsg => state = usersApp.handleMeetingActivityResponseCmdMsg(m, state)
       case m: LogoutAndEndMeetingCmdMsg => usersApp.handleLogoutAndEndMeetingCmdMsg(m, state)
       case m: SetRecordingStatusCmdMsg => usersApp.handleSetRecordingStatusCmdMsg(m)
@@ -249,6 +253,37 @@ class MeetingActor(
       case m: ShowPollResultReqMsg => pollApp.handle(m, state, liveMeeting, msgBus) // passing state but not modifying it
       case m: GetCurrentPollReqMsg => pollApp.handle(m, state, liveMeeting, msgBus) // passing state but not modifying it
       case m: RespondToPollReqMsg => pollApp.handle(m, liveMeeting, msgBus)
+=======
+      case m: MeetingActivityResponseCmdMsg =>
+        state = usersApp.handleMeetingActivityResponseCmdMsg(m, state)
+      case m: LogoutAndEndMeetingCmdMsg           => usersApp.handleLogoutAndEndMeetingCmdMsg(m, state)
+      case m: SetRecordingStatusCmdMsg            => usersApp.handleSetRecordingStatusCmdMsg(m)
+      case m: GetWebcamsOnlyForModeratorReqMsg    => usersApp.handleGetWebcamsOnlyForModeratorReqMsg(m)
+      case m: UpdateWebcamsOnlyForModeratorCmdMsg => usersApp.handleUpdateWebcamsOnlyForModeratorCmdMsg(m)
+      case m: GetRecordingStatusReqMsg            => usersApp.handleGetRecordingStatusReqMsg(m)
+      case m: ChangeUserEmojiCmdMsg               => handleChangeUserEmojiCmdMsg(m)
+      case m: EjectUserFromMeetingCmdMsg          => usersApp.handleEjectUserFromMeetingCmdMsg(m)
+      case m: GetUsersMeetingReqMsg               => usersApp.handleGetUsersMeetingReqMsg(m)
+      case m: ChangeUserRoleCmdMsg                => usersApp.handleChangeUserRoleCmdMsg(m)
+
+      // Whiteboard
+      case m: SendCursorPositionPubMsg            => handleSendCursorPositionPubMsg(m)
+      case m: ClearWhiteboardPubMsg               => handleClearWhiteboardPubMsg(m)
+      case m: UndoWhiteboardPubMsg                => handleUndoWhiteboardPubMsg(m)
+      case m: ModifyWhiteboardAccessPubMsg        => handleModifyWhiteboardAccessPubMsg(m)
+      case m: GetWhiteboardAccessReqMsg           => handleGetWhiteboardAccessReqMsg(m)
+      case m: SendWhiteboardAnnotationPubMsg      => handleSendWhiteboardAnnotationPubMsg(m)
+      case m: GetWhiteboardAnnotationsReqMsg      => handleGetWhiteboardAnnotationsReqMsg(m)
+      case m: ClientToServerLatencyTracerMsg      => handleClientToServerLatencyTracerMsg(m)
+
+      // Poll
+      case m: StartPollReqMsg                     => handleStartPollReqMsg(m)
+      case m: StartCustomPollReqMsg               => handleStartCustomPollReqMsg(m)
+      case m: StopPollReqMsg                      => handleStopPollReqMsg(m)
+      case m: ShowPollResultReqMsg                => handleShowPollResultReqMsg(m)
+      case m: GetCurrentPollReqMsg                => handleGetCurrentPollReqMsg(m)
+      case m: RespondToPollReqMsg                 => handleRespondToPollReqMsg(m)
+>>>>>>> d60a2a27824e538d12b93374856ab9f18cbe23ce
 
       // Breakout
       case m: BreakoutRoomsListMsg => state = handleBreakoutRoomsListMsg(m, state)

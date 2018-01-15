@@ -146,6 +146,8 @@ phonecomponents|MuteMeButton {
 	backgroundColor : #FFFFFF;
 	paddingTop      : 0;
 	paddingBottom   : 6;
+	verticalAlign   : middle;
+	verticalGap     : 0;
 }
 
 .breakoutRoomRibbon {
@@ -654,6 +656,7 @@ chat|ChatOptionsTab {
 	selectionColor : #CED4DB;
 }
 
+<<<<<<< HEAD
 chat|ChatMessageRenderer {
 	color : #4E5A66;
 }
@@ -666,6 +669,15 @@ chat|ChatMessageRenderer {
 .chatMessageTime {
 	color     : #696969;
 	textAlign : right;
+=======
+.chatMessageHeader {
+	color : #808080;
+}
+
+.chatMessageHeaderModerator {
+	color      : #808080;
+	fontWeight : bold;
+>>>>>>> d60a2a27824e538d12b93374856ab9f18cbe23ce
 }
 
 /*

@@ -150,7 +150,10 @@ package org.bigbluebutton.main.model.users
         
         apiResponse.record = (result.response.record.toUpperCase() == "TRUE");
         apiResponse.allowStartStopRecording = result.response.allowStartStopRecording;
+<<<<<<< HEAD
         apiResponse.webcamsOnlyForModerator = result.response.webcamsOnlyForModerator;
+=======
+>>>>>>> d60a2a27824e538d12b93374856ab9f18cbe23ce
 
 		apiResponse.bannerColor = result.response.bannerColor;
 		apiResponse.bannerText = result.response.bannerText;
